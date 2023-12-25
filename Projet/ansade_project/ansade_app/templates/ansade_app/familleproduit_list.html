@@ -1,0 +1,42 @@
+<!-- templates/ansade_app/familleproduit_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Liste des Familles de Produits</h1>
+    
+    <!-- Bouton pour ajouter une nouvelle famille de produits -->
+    <a href="{% url 'ajouter_familleproduit' %}" class="btn btn-success mb-2">Ajouter une Famille de Produits</a>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Description</th>
+          <!-- Ajoutez d'autres colonnes si nécessaire -->
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for familleproduit in object_list %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ familleproduit.nom }}</td>
+            <td>{{ familleproduit.description }}</td>
+            <!-- Ajoutez d'autres colonnes si nécessaire -->
+            <td>
+              <!-- Bouton pour voir les détails -->
+              <a href="{% url 'familleproduit_detail' pk=familleproduit.pk %}" class="btn btn-primary btn-sm">Détails</a>
+              <!-- Bouton pour modifier -->
+              <a href="{% url 'modifier_familleproduit' pk=familleproduit.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+              <!-- Bouton pour supprimer (ajoutez une confirmation si nécessaire) -->
+              <a href="{% url 'supprimer_familleproduit' pk=familleproduit.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

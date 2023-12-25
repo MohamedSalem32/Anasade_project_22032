@@ -1,0 +1,33 @@
+<!-- templates/ansade_app/pointdevente_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Liste des Points de Vente</h1>
+    <a href="{% url 'pointdevente_create' %}" class="btn btn-success">Ajouter</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Adresse</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pointdevente in object_list %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ pointdevente.nom }}</td>
+            <td>{{ pointdevente.adresse }}</td>
+            <td>
+              <a href="{% url 'pointdevente_detail' pk=pointdevente.pk %}" class="btn btn-primary btn-sm">Détails</a>
+              <a href="{% url 'pointdevente_update' pk=pointdevente.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+              <a href="{% url 'pointdevente_delete' pk=pointdevente.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

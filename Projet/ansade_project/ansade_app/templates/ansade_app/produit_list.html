@@ -1,0 +1,35 @@
+<!-- templates/ansade_app/produit_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Liste des Produits</h1>
+    <a href="{% url 'produit_create' %}" class="btn btn-success">Ajouter</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Description</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produit in object_list %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.description }}</td>
+            <td>{{ produit.prix.montant }}</td>
+            <td>
+              <a href="{% url 'produit_detail' pk=produit.pk %}" class="btn btn-primary btn-sm">Détails</a>
+              <a href="{% url 'produit_update' pk=produit.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+              <a href="{% url 'produit_delete' pk=produit.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

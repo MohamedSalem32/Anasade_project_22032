@@ -1,0 +1,15 @@
+<!-- templates/ansade_app/pointdevente_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Détails du Point de Vente</h1>
+    <dl class="row">
+      <dt class="col-sm-3">Nom</dt>
+      <dd class="col-sm-9">{{ object.nom }}</dd>
+      <dt class="col-sm-3">Adresse</dt>
+      <dd class="col-sm-9">{{ object.adresse }}</dd>
+    </dl>
+    <a href="{% url 'pointdevente_list' %}" class="btn btn-primary">Retour à la liste</a>
+  </div>
+{% endblock %}

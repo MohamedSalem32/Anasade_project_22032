@@ -1,0 +1,14 @@
+<!-- templates/ansade_app/pointdevente_form.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Point de Vente</h1>
+    <form method="post" class="form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    <a href="{% url 'pointdevente_list' %}" class="btn btn-secondary">Annuler</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!-- templates/ansade_app/ponderation_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Détails de la Pondération</h1>
+    <dl class="row">
+      <dt class="col-sm-3">Nom</dt>
+      <dd class="col-sm-9">{{ object.nom }}</dd>
+      <dt class="col-sm-3">Valeur</dt>
+      <dd class="col-sm-9">{{ object.valeur }}</dd>
+    </dl>
+    <a href="{% url 'ponderation_list' %}" class="btn btn-primary">Retour à la liste</a>
+  </div>
+{% endblock %}
