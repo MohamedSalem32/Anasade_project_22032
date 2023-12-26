@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 from django.urls import reverse
-from .models import Produit, FamilleProduit, Panier, Prix, Ponderation, PointDeVente
+from .models import Produit, FamilleProduit, Panier, Prix, Panier_Produit, PointDeVente
 
 # Importez la classe HomeView
 from django.views import View
@@ -48,12 +48,12 @@ urlpatterns = [
     path('prix/supprimer/<int:pk>/', PrixDeleteView.as_view(), name='prix_delete'),
 
     # Chemin pour afficher la liste des pondérations
-    path('ponderations/', PonderationListView.as_view(), name='ponderation_list'),
+    path('ponderations/', Panier_ProduitListView.as_view(), name='ponderation_list'),
     # Chemin pour afficher les détails d'une pondération spécifique
-    path('ponderations/<int:pk>/', PonderationDetailView.as_view(), name='ponderation_detail'),
-    path('ponderations/ajouter/', PonderationCreateView.as_view(), name='ponderation_create'),
-    path('ponderations/modifier/<int:pk>/', PonderationUpdateView.as_view(), name='ponderation_update'),
-    path('ponderations/supprimer/<int:pk>/', PonderationDeleteView.as_view(), name='ponderation_delete'),
+    path('ponderations/<int:pk>/', Panier_ProduitDetailView.as_view(), name='ponderation_detail'),
+    path('ponderations/ajouter/', Panier_ProduitCreateView.as_view(), name='ponderation_create'),
+    path('ponderations/modifier/<int:pk>/', Panier_ProduitUpdateView.as_view(), name='ponderation_update'),
+    path('ponderations/supprimer/<int:pk>/', Panier_ProduitDeleteView.as_view(), name='ponderation_delete'),
     
     # Chemin pour afficher la liste des points de vente
     path('pointdeventes/', PointDeVenteListView.as_view(), name='pointdevente_list'),

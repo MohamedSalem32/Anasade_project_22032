@@ -10,24 +10,26 @@ class FamilleProduitForm(forms.ModelForm):
 class PanierForm(forms.ModelForm):
     class Meta:
         model = Panier
-        fields = ['nom', 'description']
+        fields = ['date_ajout', 'description','label','code']
     
 class PrixForm(forms.ModelForm):
     class Meta:
         model = Prix
-        fields = ['montant']
+        fields = ['montant','produit','point_vente','date_validite']
 
-class PonderationForm(forms.ModelForm):
+class Panier_ProduitForm(forms.ModelForm):
     class Meta:
-        model = Ponderation
-        fields = ['valeur']
+        model = Panier_Produit
+        fields = ['nom','ponderation','prix','quantite','code']
 
 class PointDeVenteForm(forms.ModelForm):
     class Meta:
         model = PointDeVente
-        fields = ['nom', 'adresse']
+        fields = ['wilaya','moughataa','commune','gps_lat','gps_long','code']
 
 class ProduitForm(forms.ModelForm):
     class Meta:
         model = Produit
-        fields = ['nom', 'description', 'prix']
+        fields = ['nom', 'description', 'prix', 'famille', 'code', 'date_creation']
+
+ 

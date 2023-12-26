@@ -3,7 +3,7 @@
 
 {% block content %}
   <div class="container mt-4">
-    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Famille de Produits</h1>
+    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une famille de produits</h1>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}

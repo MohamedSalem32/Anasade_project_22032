@@ -3,8 +3,8 @@
 
 {% block content %}
   <div class="container mt-4">
-    <h1>Liste des Produits</h1>
-    <a href="{% url 'produit_create' %}" class="btn btn-success">Ajouter</a>
+    <h1>Liste des produits</h1>
+    <a href="{% url 'produit_create' %}" class="btn btn-success">Ajouter un nouveau produit</a>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -12,6 +12,10 @@
           <th scope="col">Nom</th>
           <th scope="col">Description</th>
           <th scope="col">Prix</th>
+          <th scope="col">Quantité</th>
+          <th scope="col">Date de création</th>
+          <th scope="col">Famille</th>
+          <th scope="col">Code</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -22,6 +26,10 @@
             <td>{{ produit.nom }}</td>
             <td>{{ produit.description }}</td>
             <td>{{ produit.prix.montant }}</td>
+            <td>{{ produit.quantite }}</td>
+            <td>{{ produit.date_creation }}</td>
+            <td>{{ produit.famille.nom }}</td>
+            <td>{{ produit.code }}</td>
             <td>
               <a href="{% url 'produit_detail' pk=produit.pk %}" class="btn btn-primary btn-sm">Détails</a>
               <a href="{% url 'produit_update' pk=produit.pk %}" class="btn btn-warning btn-sm">Modifier</a>

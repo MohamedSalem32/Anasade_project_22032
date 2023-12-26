@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Votre Titre par Défaut{% endblock %}</title>
+    <title>{% block title %}AnsadeApp {% endblock %}</title>
     <!-- Ajoutez ici vos liens vers les fichiers CSS externes ou CDN, si nécessaire -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -22,13 +22,13 @@
                     <a class="nav-link" href="{% url 'produit_list' %}">Produits</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'familleproduit_list' %}">Familles de Produits</a>
+                    <a class="nav-link" href="{% url 'familleproduit_list' %}">Familles de produits</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'panier_list' %}">Paniers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'pointdevente_list' %}">Points de Vente</a>
+                    <a class="nav-link" href="{% url 'pointdevente_list' %}">Points de vente</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'prix_list' %}">Prix</a>
