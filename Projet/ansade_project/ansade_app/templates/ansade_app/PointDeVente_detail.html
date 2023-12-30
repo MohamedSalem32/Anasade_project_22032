@@ -5,10 +5,18 @@
   <div class="container mt-4">
     <h1>Détails du Point de Vente</h1>
     <dl class="row">
-      <dt class="col-sm-3">Nom</dt>
-      <dd class="col-sm-9">{{ object.nom }}</dd>
-      <dt class="col-sm-3">Adresse</dt>
-      <dd class="col-sm-9">{{ object.adresse }}</dd>
+      <dt class="col-sm-3">Wilaya</dt>
+      <dd class="col-sm-9">{{ object.wilaya }}</dd>
+      <dt class="col-sm-3">Moughataa</dt>
+      <dd class="col-sm-9">{{ object.moughataa }}</dd>
+      <dt class="col-sm-3">Commune</dt>
+      <dd class="col-sm-9">{{ object.commune }}</dd>
+      <dt class="col-sm-3">GPS Latitude</dt>
+      <dd class="col-sm-9">{{ object.gps_lat }}</dd>
+      <dt class="col-sm-3">GPS Longitude</dt>
+      <dd class="col-sm-9">{{ object.gps_long }}</dd>
+      <dt class="col-sm-3">Code</dt>
+      <dd class="col-sm-9">{{ object.code }}</dd>
     </dl>
     <a href="{% url 'pointdevente_list' %}" class="btn btn-primary">Retour à la liste</a>
   </div>

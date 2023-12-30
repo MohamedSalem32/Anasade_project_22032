@@ -93,7 +93,7 @@ class Panier_Produit(models.Model):
     
     
     def get_absolute_url(self):
-        return reverse('ponderation_detail', args=[str(self.id)])
+        return reverse('Panier_Produit_detail', args=[str(self.id)])
 
 
 # Enfin, définir les autres classes

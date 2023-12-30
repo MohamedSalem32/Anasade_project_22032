@@ -1,0 +1,33 @@
+<!-- templates/ansade_app/panier_produit_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Liste des produits de panier</h1>
+    <a href="{% url 'Panier_Produit_create' %}" class="btn btn-success">Ajouter un nouveau produit de panier</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Pondération</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for Panier_Produit in object_list %}
+          <tr>
+            <th scope="row">{{ Panier_Produit.id }}</th>
+            <td>{{ Panier_Produit.nom }}</td>
+            <td>{{ Panier_Produit.ponderation }}</td>
+            <td>
+              <a href="{% url 'Panier_Produit_detail' pk=Panier_Produit.pk %}" class="btn btn-primary btn-sm">Détails</a>
+              <a href="{% url 'Panier_Produit_update' pk=Panier_Produit.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+              <a href="{% url 'Panier_Produit_delete' pk=Panier_Produit.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

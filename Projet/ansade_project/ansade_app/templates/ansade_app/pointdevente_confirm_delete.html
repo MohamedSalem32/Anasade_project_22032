@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container mt-4">
     <h1>Confirmer la suppression du Point de Vente</h1>
-    <p>Êtes-vous sûr de vouloir supprimer le point de vente "{{ object.nom }}" ?</p>
+    <p>Êtes-vous sûr de vouloir supprimer le point de vente "{{ object.code }}" ?</p>
     <form method="post" class="form">
       {% csrf_token %}
       <button type="submit" class="btn btn-danger">Supprimer</button>

@@ -1,33 +1,34 @@
- <!-- templates/ansade_app/panier_list.html -->
+<!-- templates/ansade_app/panier_list.html -->
 {% extends 'base.html' %}
 
 {% block content %}
   <div class="container mt-4">
-    <h1>Liste des Paniers</h1>
-    <a href="{% url 'panier_create' %}" class="btn btn-success">Ajouter</a>
-    <table class="table table-striped">
+    <h1>Liste des paniers</h1>
+     <!-- Ajout du lien vers le formulaire de création de panier -->
+     <a href="{% url 'panier_create' %}" class="btn btn-success">Ajouter un nouveau panier</a>
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Nom</th>
-          <th scope="col">Description</th>
+          <th scope="col">Code</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for panier in object_list %}
           <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ panier.nom }}</td>
-            <td>{{ panier.description }}</td>
+            <th scope="row">{{ panier.id }}</th>
+            <td>{{ panier.code }}</td>
             <td>
-              <a href="{% url 'panier_detail' pk=panier.pk %}" class="btn btn-primary btn-sm">Détails</a>
-              <a href="{% url 'panier_update' pk=panier.pk %}" class="btn btn-warning btn-sm">Modifier</a>
-              <a href="{% url 'panier_delete' pk=panier.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+              <a href="{% url 'panier_detail' panier.id %}" class="btn btn-primary btn-sm">Détails</a>
+              <a href="{% url 'panier_update' panier.id %}" class="btn btn-warning btn-sm">Modifier</a>
+              <a href="{% url 'panier_delete' panier.id %}" class="btn btn-danger btn-sm">Supprimer</a>
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
+
+   
   </div>
 {% endblock %}

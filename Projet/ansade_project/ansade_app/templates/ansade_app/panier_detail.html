@@ -5,10 +5,14 @@
   <div class="container mt-4">
     <h1>Détails du Panier</h1>
     <dl class="row">
-      <dt class="col-sm-3">Nom</dt>
-      <dd class="col-sm-9">{{ object.nom }}</dd>
+      <dt class="col-sm-3">Code</dt>
+      <dd class="col-sm-9">{{ object.code }}</dd>
+      <dt class="col-sm-3">Date d'Ajout</dt>
+      <dd class="col-sm-9">{{ object.date_ajout }}</dd>
       <dt class="col-sm-3">Description</dt>
       <dd class="col-sm-9">{{ object.description }}</dd>
+      <dt class="col-sm-3">Label</dt>
+      <dd class="col-sm-9">{{ object.label }}</dd>
     </dl>
     <a href="{% url 'panier_list' %}" class="btn btn-primary">Retour à la liste</a>
   </div>

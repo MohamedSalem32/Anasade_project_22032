@@ -1,0 +1,21 @@
+<!-- templates/ansade_app/panier_produit_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Détails du produit de panier</h1>
+    <dl class="row">
+      <dt class="col-sm-3">Nom</dt>
+      <dd class="col-sm-9">{{ object.nom }}</dd>
+      <dt class="col-sm-3">Quantité</dt>
+      <dd class="col-sm-9">{{ object.quantite }}</dd>
+      <dt class="col-sm-3">Prix</dt>
+      <dd class="col-sm-9">{{ object.prix.montant }}</dd>
+      <dt class="col-sm-3">Pondération</dt>
+      <dd class="col-sm-9">{{ object.ponderation }}</dd>
+      <dt class="col-sm-3">Code du Panier</dt>
+      <dd class="col-sm-9">{{ object.code.code }}</dd>
+    </dl>
+    <a href="{% url 'Panier_Produit_list' %}" class="btn btn-primary">Retour à la liste</a>
+  </div>
+{% endblock %}

@@ -1,6 +1,8 @@
 <!-- templates/ansade_app/produit_detail.html -->
 {% extends 'base.html' %}
 
+{% block title %}Détails du Produit - {{ object.nom }}{% endblock %}
+
 {% block content %}
   <div class="container mt-4">
     <h1>Détails du Produit</h1>
@@ -10,7 +12,13 @@
       <dt class="col-sm-3">Description</dt>
       <dd class="col-sm-9">{{ object.description }}</dd>
       <dt class="col-sm-3">Prix</dt>
-      <dd class="col-sm-9">{{ object.prix.montant }}</dd>
+      <dd class="col-sm-9">{{ object.prix }}</dd>
+      <dt class="col-sm-3">Date de Création</dt>
+      <dd class="col-sm-9">{{ object.date_creation }}</dd>
+      <dt class="col-sm-3">Famille</dt>
+      <dd class="col-sm-9">{{ object.famille }}</dd>
+      <dt class="col-sm-3">Code</dt>
+      <dd class="col-sm-9">{{ object.code }}</dd>
     </dl>
     <a href="{% url 'produit_list' %}" class="btn btn-primary">Retour à la liste</a>
   </div>

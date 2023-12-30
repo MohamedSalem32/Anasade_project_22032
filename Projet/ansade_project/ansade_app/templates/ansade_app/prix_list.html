@@ -1,16 +1,17 @@
-<!-- templates/ansade_app/prix_list.html -->
+<!-- ansade_app/prix_list.html -->
 {% extends 'base.html' %}
 
 {% block content %}
   <div class="container mt-4">
-    <h1>Liste des Prix</h1>
-    <a href="{% url 'prix_create' %}" class="btn btn-success">Ajouter</a>
+    <h1>Liste des prix</h1>
+    <a href="{% url 'prix_create' %}" class="btn btn-success">Ajouter un nouveau prix</a>
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Nom</th>
           <th scope="col">Montant</th>
+          <th scope="col">Produit</th>
+          
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -18,8 +19,8 @@
         {% for prix in object_list %}
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ prix.nom }}</td>
             <td>{{ prix.montant }}</td>
+            <td>{{ prix.produit }}</td>
             <td>
               <a href="{% url 'prix_detail' pk=prix.pk %}" class="btn btn-primary btn-sm">Détails</a>
               <a href="{% url 'prix_update' pk=prix.pk %}" class="btn btn-warning btn-sm">Modifier</a>

@@ -1,14 +1,14 @@
-<!-- templates/ansade_app/prix_confirm_delete.html -->
+<!-- ansade_app/prix_confirm_delete.html -->
 {% extends 'base.html' %}
 
 {% block content %}
   <div class="container mt-4">
-    <h1>Confirmer la suppression du Prix</h1>
-    <p>Êtes-vous sûr de vouloir supprimer le prix "{{ object.nom }}" ?</p>
-    <form method="post" class="form">
+    <h1>Confirmer la suppression du prix</h1>
+    <p>Êtes-vous sûr de vouloir supprimer le prix "{{ prix }}"?</p>
+    <form method="post">
       {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Supprimer</button>
-      <a href="{% url 'prix_list' %}" class="btn btn-secondary">Annuler</a>
+      <button type="submit" class="btn btn-danger">Oui, supprimer</button>
     </form>
+    <a href="{% url 'prix_list' %}" class="btn btn-secondary">Annuler</a>
   </div>
 {% endblock %}

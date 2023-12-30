@@ -1,0 +1,14 @@
+<!-- templates/ansade_app/panier_produit_confirm_delete.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Confirmer la suppression du produit de panier</h1>
+    <p>Êtes-vous sûr de vouloir supprimer le produit "{{ object.nom }}" du panier ?</p>
+    <form method="post" class="form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Supprimer</button>
+      <a href="{% url 'Panier_Produit_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+  </div>
+{% endblock %}

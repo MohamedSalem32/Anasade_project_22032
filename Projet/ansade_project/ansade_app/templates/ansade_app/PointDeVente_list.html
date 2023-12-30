@@ -3,14 +3,14 @@
 
 {% block content %}
   <div class="container mt-4">
-    <h1>Liste des Points de Vente</h1>
-    <a href="{% url 'pointdevente_create' %}" class="btn btn-success">Ajouter</a>
+    <h1>Liste des points de vente</h1>
+    <a href="{% url 'pointdevente_create' %}" class="btn btn-success">Ajouter un nouveau point de vente</a>
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Nom</th>
-          <th scope="col">Adresse</th>
+          <th scope="col">Commune</th>
+          <th scope="col">Code</th> 
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -18,8 +18,8 @@
         {% for pointdevente in object_list %}
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ pointdevente.nom }}</td>
-            <td>{{ pointdevente.adresse }}</td>
+            <td>{{ pointdevente.commune }}</td>
+            <td>{{ pointdevente.code }}</td>
             <td>
               <a href="{% url 'pointdevente_detail' pk=pointdevente.pk %}" class="btn btn-primary btn-sm">Détails</a>
               <a href="{% url 'pointdevente_update' pk=pointdevente.pk %}" class="btn btn-warning btn-sm">Modifier</a>

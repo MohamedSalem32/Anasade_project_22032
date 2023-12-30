@@ -48,12 +48,12 @@ urlpatterns = [
     path('prix/supprimer/<int:pk>/', PrixDeleteView.as_view(), name='prix_delete'),
 
     # Chemin pour afficher la liste des pondérations
-    path('ponderations/', Panier_ProduitListView.as_view(), name='ponderation_list'),
+    path('Panier_Produit/', Panier_ProduitListView.as_view(), name='Panier_Produit_list'),
     # Chemin pour afficher les détails d'une pondération spécifique
-    path('ponderations/<int:pk>/', Panier_ProduitDetailView.as_view(), name='ponderation_detail'),
-    path('ponderations/ajouter/', Panier_ProduitCreateView.as_view(), name='ponderation_create'),
-    path('ponderations/modifier/<int:pk>/', Panier_ProduitUpdateView.as_view(), name='ponderation_update'),
-    path('ponderations/supprimer/<int:pk>/', Panier_ProduitDeleteView.as_view(), name='ponderation_delete'),
+    path('Panier_Produit/<int:pk>/', Panier_ProduitDetailView.as_view(), name='Panier_Produit_detail'),
+    path('Panier_Produit/ajouter/', Panier_ProduitCreateView.as_view(), name='Panier_Produit_create'),
+    path('Panier_Produit/modifier/<int:pk>/', Panier_ProduitUpdateView.as_view(), name='Panier_Produit_update'),
+    path('Panier_Produit/supprimer/<int:pk>/', Panier_ProduitDeleteView.as_view(), name='Panier_Produit_delete'),
     
     # Chemin pour afficher la liste des points de vente
     path('pointdeventes/', PointDeVenteListView.as_view(), name='pointdevente_list'),

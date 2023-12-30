@@ -6,14 +6,13 @@
     <h1>Liste des familles de produits</h1>
     
     <!-- Bouton pour ajouter une nouvelle famille de produits -->
-    <a href="{% url 'ajouter_familleproduit' %}" class="btn btn-success mb-2">Ajouter une famille de produits</a>
+    <a href="{% url 'ajouter_familleproduit' %}" class="btn btn-success mb-2">Ajouter une nouvelle famille de produits</a>
 
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Nom</th>
-          <th scope="col">Description</th>
           <!-- Ajoutez d'autres colonnes si nécessaire -->
           <th scope="col">Actions</th>
         </tr>
@@ -23,7 +22,6 @@
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ familleproduit.nom }}</td>
-            <td>{{ familleproduit.description }}</td>
             <!-- Ajoutez d'autres colonnes si nécessaire -->
             <td>
               <!-- Bouton pour voir les détails -->

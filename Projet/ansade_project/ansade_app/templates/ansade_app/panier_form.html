@@ -6,7 +6,38 @@
     <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Panier</h1>
     <form method="post" class="form">
       {% csrf_token %}
-      {{ form.as_p }}
+      <div class="mb-3">
+        <label for="{{ form.date_ajout.id_for_label }}" class="form-label">Date d'Ajout :</label>
+        {{ form.date_ajout }}
+        {% if form.date_ajout.errors %}
+          <p class="text-danger">{{ form.date_ajout.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.code.id_for_label }}" class="form-label">Code :</label>
+        {{ form.code }}
+        {% if form.code.errors %}
+          <p class="text-danger">{{ form.code.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.description.id_for_label }}" class="form-label">Description :</label>
+        {{ form.description }}
+        {% if form.description.errors %}
+          <p class="text-danger">{{ form.description.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.label.id_for_label }}" class="form-label">Label :</label>
+        {{ form.label }}
+        {% if form.label.errors %}
+          <p class="text-danger">{{ form.label.errors.0 }}</p>
+        {% endif %}
+      </div>
+
       <button type="submit" class="btn btn-primary">Enregistrer</button>
     </form>
     <a href="{% url 'panier_list' %}" class="btn btn-secondary">Annuler</a>

@@ -134,29 +134,29 @@ class PrixDeleteView(DeleteView):
 # Classe de vue pour afficher la liste des pondérations
 class Panier_ProduitListView(ListView):
     model = Panier_Produit
-    template_name = 'ansade_app/ponderation_list.html'
+    template_name = 'ansade_app/Panier_Produit_list.html'
 
 # Classe de vue pour afficher les détails d'une pondération spécifique
 class Panier_ProduitDetailView(DetailView):
     model = Panier_Produit
-    template_name = 'ansade_app/ponderation_detail.html'
+    template_name = 'ansade_app/Panier_Produit_detail.html'
 
 class Panier_ProduitCreateView(CreateView):
     model = Panier_Produit
-    template_name = 'ansade_app/ponderation_form.html'
+    template_name = 'ansade_app/Panier_Produit_form.html'
     fields = ['nom','ponderation','prix','quantite','code']
 
 
 class Panier_ProduitUpdateView(UpdateView):
     model = Panier_Produit
-    template_name = 'ansade_app/ponderation_form.html'
+    template_name = 'ansade_app/Panier_Produit_form.html'
     fields = ['nom','ponderation','prix','quantite','code']
 
 
 class Panier_ProduitDeleteView(DeleteView):
     model = Panier_Produit
-    template_name = 'ansade_app/ponderation_confirm_delete.html'
-    success_url = reverse_lazy('ponderation_list')
+    template_name = 'ansade_app/Panier_Produit_confirm_delete.html'
+    success_url = reverse_lazy('Panier_Produit_list')
 
 # Classe de vue pour afficher la liste des points de vente
 class PointDeVenteListView(ListView):
