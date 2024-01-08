@@ -2,32 +2,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container mt-4">
-    <h1>Liste des points de vente</h1>
-    <a href="{% url 'pointdevente_create' %}" class="btn btn-success">Ajouter un nouveau point de vente</a>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Commune</th>
-          <th scope="col">Code</th> 
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for pointdevente in object_list %}
-          <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ pointdevente.commune }}</td>
-            <td>{{ pointdevente.code }}</td>
-            <td>
-              <a href="{% url 'pointdevente_detail' pk=pointdevente.pk %}" class="btn btn-primary btn-sm">Détails</a>
-              <a href="{% url 'pointdevente_update' pk=pointdevente.pk %}" class="btn btn-warning btn-sm">Modifier</a>
-              <a href="{% url 'pointdevente_delete' pk=pointdevente.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+  <div class="cont w-full">
+    <div class="width-table relative isolate px-6 pt-0 lg:px-3 t">
+      <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+        <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+      </div>
+      <div class="w-full sm:py-20 lg:py-20">
+      <!-- Bouton pour ajouter une nouvelle famille de produits -->
+      <h1 class="underline text-2xl text-center">Liste des points de vente</h1>
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 shadow-md border-2">
+          <tr class="">
+            <th scope="col" class="px-6 py-3 rounded-t-lg">#</th>
+            <th scope="col" class="px-6 py-3">Commune</th>
+            <th scope="col" class="px-6 py-3">Code</th>
+            <!-- Ajoutez d'autres colonnes si nécessaire -->
+            <th scope="col" class="px-6 py-3 rounded-r-lg">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 shadow-xl border-2">
+          {% for pointdevente in object_list %}
+          <tr class="p-6">
+            <th scope="row" class="p-6">{{ forloop.counter }}</th>
+            <td scope="row" class="p-6">{{ pointdevente.commune }}</td>
+            <td scope="row" class="p-6">{{ pointdevente.code }}</td>
+            <!-- Ajoutez d'autres colonnes si nécessaire -->
+            <td class="mt-6">
+              <!-- Bouton pour voir les détails -->
+              <a href="{% url 'pointdevente_detail' pk=pointdevente.pk %}" class="details-icon text-white rounded-xl px-3 py-2 "><span class="material-symbols-outlined">info</span></a>
+              <!-- Bouton pour modifier -->
+              <a href="{% url 'pointdevente_update' pk=pointdevente.pk %}" class="edit-icon text-white rounded-xl px-3 py-2 "><span class="material-symbols-outlined">edit</span></a>
+              <!-- Bouton pour supprimer (ajoutez une confirmation si nécessaire) -->
+              <a href="{% url 'pointdevente_delete' pk=pointdevente.pk %}" class="red-icon text-white rounded-sm p-2 items-center"><span class="material-symbols-outlined">delete</span></a>
             </td>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="sm:py-20 lg:py-20 div-ajout p-5">
+      <!-- Bouton pour exporter la liste des familles de produits au format CSV -->
+      <a href="{% url 'export_pointsdevente_csv' %}" class="export">
+          <span class="material-symbols-outlined w-1">
+              cloud_download
+          </span>
+          <p class="font-sans text-lg"><b>Exporter au format CSV</b></p>
+      </a>
+  </div>
+    <div class="sm:py-20 lg:py-20 div-ajout p-5">
+      <a href="{% url 'pointdevente_create' %}" class="ajout">
+        <span class="material-symbols-outlined w-1">
+          add_circle
+          </span>
+        <p class="font-sans text-lg"><b>Ajouter une nouvelle point de vente</b></p>
+      </a>
+    </div>
   </div>
 {% endblock %}

@@ -1,45 +1,59 @@
 <!-- templates/ansade_app/panier_form.html -->
 {% extends 'base.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
-  <div class="container mt-4">
-    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Panier</h1>
-    <form method="post" class="form">
-      {% csrf_token %}
-      <div class="mb-3">
-        <label for="{{ form.date_ajout.id_for_label }}" class="form-label">Date d'Ajout :</label>
-        {{ form.date_ajout }}
-        {% if form.date_ajout.errors %}
-          <p class="text-danger">{{ form.date_ajout.errors.0 }}</p>
-        {% endif %}
+  <!--My Form-->
+  <div class="w-full relative isolate px-6 pt-0 lg:px-3 ">
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+    <!--Modal-->
+    <div class="w-full mx-auto max-w-2xl lg:pt-20 ">
+      <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#9BB8CD] sm:mx-0 sm:h-10 sm:w-10">
+              <span class="material-symbols-outlined text-white">
+                shopping_cart
+                </span>
+            </div>
+            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Panier</h3>
+              <form method="post">
+              <div class="mt-2">
+                {% csrf_token %}
+                <b>Date d'ajout: </b>
+                  {% render_field form.date_ajout type="date" placeholder="Date" style='width: 100%; background:#9BB8CD; padding: 12px 20px;margin: 8px 0;box-sizing: border-box;border:dashed 1.5px;border-radius:10px;color:#ffff' %} <br>
+                  {% if form.date_ajout.errors %}
+                  <p class="red-icon">{{ form.date_ajout.errors.0 }}</p>
+                  {% endif %}
+                <b>Code: </b>
+                  {% render_field form.code placeholder="Code" style='width: 100%; background:#9BB8CD; padding: 12px 20px;margin: 8px 0;box-sizing: border-box;border:dashed 1.5px;border-radius:10px;color:#ffff' %}
+                  {% if form.code.errors %}
+                  <p class="red-icon">{{ form.code.errors.0 }}</p>
+                  {% endif %}
+                <b>Description: </b>
+                  {% render_field form.description placeholder="Description" style='width: 100%; background:#9BB8CD; padding: 12px 20px;margin: 8px 0;box-sizing: border-box;border:dashed 1.5px;border-radius:10px;color:white' %}
+                  {% if form.description.errors %}
+                  <p class="red-icon">{{ form.description.errors.0 }}</p>
+                  {% endif %}
+                <b>Label: </b>
+                  {% render_field form.label placeholder="Label" style='width: 100%; background:#9BB8CD; padding: 12px 20px;margin: 8px 0;box-sizing: border-box;border:dashed 1.5px;border-radius:10px;color:#ffff' %}  <br>
+                  {% if form.label.errors %}
+                  <p class="red-icon">{{ form.label.errors.0 }}</p>
+                  {% endif %}
+                </div>
+              <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button type="submit" class="inline-flex w-full justify-center rounded-md bg-green-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 sm:ml-3 sm:w-auto">Enregistrer</button>
+                <a href="{% url 'panier_list' %}" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Annuler</a>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+          {% csrf_token %}
+      </form>
       </div>
-
-      <div class="mb-3">
-        <label for="{{ form.code.id_for_label }}" class="form-label">Code :</label>
-        {{ form.code }}
-        {% if form.code.errors %}
-          <p class="text-danger">{{ form.code.errors.0 }}</p>
-        {% endif %}
-      </div>
-
-      <div class="mb-3">
-        <label for="{{ form.description.id_for_label }}" class="form-label">Description :</label>
-        {{ form.description }}
-        {% if form.description.errors %}
-          <p class="text-danger">{{ form.description.errors.0 }}</p>
-        {% endif %}
-      </div>
-
-      <div class="mb-3">
-        <label for="{{ form.label.id_for_label }}" class="form-label">Label :</label>
-        {{ form.label }}
-        {% if form.label.errors %}
-          <p class="text-danger">{{ form.label.errors.0 }}</p>
-        {% endif %}
-      </div>
-
-      <button type="submit" class="btn btn-primary">Enregistrer</button>
-    </form>
-    <a href="{% url 'panier_list' %}" class="btn btn-secondary">Annuler</a>
+    </div>
   </div>
 {% endblock %}

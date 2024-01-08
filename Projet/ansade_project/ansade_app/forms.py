@@ -1,17 +1,21 @@
 # ansade_app/forms.py
 from django import forms
 from .models import *
+from tempus_dominus.widgets import DatePicker
 
 class FamilleProduitForm(forms.ModelForm):
     class Meta:
         model = FamilleProduit
         fields = ['nom', 'description']  # Ajoutez les champs de votre modèle ici
 
+    
 class PanierForm(forms.ModelForm):
     class Meta:
         model = Panier
-        fields = ['date_ajout', 'description','label','code']
-    
+        fields = ['date_ajout', 'description', 'label', 'code']
+        widgets = {
+            'date_ajout': forms.DateInput(attrs={'type': 'date'}),
+        }
 class PrixForm(forms.ModelForm):
     class Meta:
         model = Prix

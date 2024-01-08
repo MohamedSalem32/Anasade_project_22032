@@ -1,5 +1,6 @@
 # ansade_app/views.py
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponse
 from django.urls import reverse_lazy
@@ -8,11 +9,51 @@ from .models import Produit, FamilleProduit, Panier, Prix, Panier_Produit, Point
 from django.views import View
 from django.views.generic.edit import CreateView
 from .forms import *
+from import_export import resources
+from tablib import Dataset
+from .models import ProduitResource 
 
+# Classe de ressource pour l'import/export des Produits
+class ProduitResource(resources.ModelResource):
+    class Meta:
+        model = Produit
+
+# Fonction pour l'export des produits au format CSV
+def export_produits_csv(request):
+    produit_resource = ProduitResource()
+    dataset = produit_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="produits.csv"'
+    return response 
+# Fonction pour l'importation des produits à partir d'un fichier CSV
+def import_produits_csv(request):
+    if request.method == 'POST':
+        produit_resource = ProduitResource()
+        dataset = Dataset()
+
+        new_produits = request.FILES['myfile']
+
+        if not new_produits.name.endswith('csv'):
+            messages.error(request, 'Le fichier doit être au format CSV')
+            return render(request, 'ansade_app/import_data.html')
+
+        imported_data = dataset.load(new_produits.read().decode('latin-1'), format='csv')
+        result = produit_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+        if not result.has_errors():
+            produit_resource.import_data(dataset, dry_run=False)  # Actually import now
+            messages.success(request, 'Les données ont été importées avec succès.')
+        else:
+            messages.error(request, 'Il y a des erreurs dans votre fichier.')
+
+    return render(request, 'ansade_app/import_data.html')         
 # Classe de vue pour afficher la liste des produits
 class ProduitListView(ListView):
     model = Produit
     template_name = 'ansade_app/produit_list.html'
+
+    
+ 
 
 # Classe de vue pour afficher les détails d'un produit spécifique
 class ProduitDetailView(DetailView):
@@ -48,10 +89,23 @@ def ajouter_produit(request):
 
 # Classe de vue pour afficher la liste des familles de produits
 
+# Classe de ressource pour l'import/export des Familles de Produits
+class FamilleProduitResource(resources.ModelResource):
+    class Meta:
+        model = FamilleProduit
 
+# Fonction pour l'export des familles de produits au format CSV
+def export_famillesproduits_csv(request):
+        familleproduit_resource = FamilleProduitResource()
+        dataset = familleproduit_resource.export()
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="famillesproduits.csv"'
+        return response      
 class FamilleProduitListView(ListView):
     model = FamilleProduit
     template_name = 'ansade_app/familleproduit_list.html'
+
+ 
 
 # Classe de vue pour afficher les détails d'une famille de produit spécifique
 class FamilleProduitDetailView(DetailView):
@@ -79,11 +133,27 @@ class FamilleProduitDeleteView(DeleteView):
     success_url = reverse_lazy('familleproduit_list')
 
 # Classe de vue pour afficher la liste des paniers
+    
+# Classe de ressource pour l'import/export des Paniers
+class PanierResource(resources.ModelResource):
+    class Meta:
+        model = Panier
+# Fonction pour l'export des paniers au format CSV
+def export_paniers_csv(request):
+    panier_resource = PanierResource()
+    dataset = panier_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="paniers.csv"'
+    return response
 class PanierListView(ListView):
     model = Panier
     template_name = 'ansade_app/panier_list.html'
 
+    
+
 # Classe de vue pour afficher les détails d'un panier spécifique
+
+
 class PanierDetailView(DetailView):
     model = Panier
     template_name = 'ansade_app/panier_detail.html'
@@ -103,12 +173,28 @@ class PanierUpdateView(UpdateView):
 class PanierDeleteView(DeleteView):
     model = Panier
     template_name = 'ansade_app/panier_confirm_delete.html'
-    success_url = reverse_lazy('panier_list')    
+    success_url = reverse_lazy('panier_list') 
+
+   
 
 # Classe de vue pour afficher la liste des prix
+    
+# Classe de ressource pour l'import/export des Prix
+class PrixResource(resources.ModelResource):
+    class Meta:
+        model = Prix
+# Fonction pour l'export des prix au format CSV
+def export_prix_csv(request):
+    prix_resource = PrixResource()
+    dataset = prix_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="prix.csv"'
+    return response 
 class PrixListView(ListView):
     model = Prix
     template_name = 'ansade_app/prix_list.html'
+
+       
 
 # Classe de vue pour afficher les détails d'un prix spécifique
 class PrixDetailView(DetailView):
@@ -131,10 +217,23 @@ class PrixDeleteView(DeleteView):
     template_name = 'ansade_app/prix_confirm_delete.html'
     success_url = reverse_lazy('prix_list')
 
+# Classe de ressource pour l'import/export des Paniers_Produits
+class Panier_ProduitResource(resources.ModelResource):
+    class Meta:
+        model = Panier_Produit
+# Fonction pour l'export des paniers produits au format CSV
+def export_paniersproduits_csv(request):
+    panier_produit_resource = Panier_ProduitResource()
+    dataset = panier_produit_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="paniersproduits.csv"'
+    return response
 # Classe de vue pour afficher la liste des pondérations
 class Panier_ProduitListView(ListView):
     model = Panier_Produit
     template_name = 'ansade_app/Panier_Produit_list.html'
+
+     
 
 # Classe de vue pour afficher les détails d'une pondération spécifique
 class Panier_ProduitDetailView(DetailView):
@@ -158,11 +257,24 @@ class Panier_ProduitDeleteView(DeleteView):
     template_name = 'ansade_app/Panier_Produit_confirm_delete.html'
     success_url = reverse_lazy('Panier_Produit_list')
 
+# Classe de ressource pour l'import/export des Points de Vente
+class PointDeVenteResource(resources.ModelResource):
+    class Meta:
+        model = PointDeVente
+# Fonction pour l'export des points de vente au format CSV
+def export_pointsdevente_csv(request):
+    pointdevente_resource = PointDeVenteResource()
+    dataset = pointdevente_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pointsdevente.csv"'
+    return response
+
 # Classe de vue pour afficher la liste des points de vente
 class PointDeVenteListView(ListView):
     model = PointDeVente
     template_name = 'ansade_app/pointdevente_list.html'
 
+    
 # Classe de vue pour afficher les détails d'un point de vente spécifique
 class PointDeVenteDetailView(DetailView):
     model = PointDeVente
@@ -192,3 +304,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['variable'] = 'Valeur de la variable'
         return context
+
+
+def application_page(request):
+    return render(request, 'ansade_app/application_page.html')

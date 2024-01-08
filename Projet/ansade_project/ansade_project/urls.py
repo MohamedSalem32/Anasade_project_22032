@@ -10,4 +10,5 @@ urlpatterns = [
 
     # Chemin pour afficher la page d'accueil
     path('', HomeView.as_view(), name='home'),
+
 ]

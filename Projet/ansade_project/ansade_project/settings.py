@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ansade_app',
+    'widget_tweaks',
+    'import_export',
 ]
 
 MIDDLEWARE = [

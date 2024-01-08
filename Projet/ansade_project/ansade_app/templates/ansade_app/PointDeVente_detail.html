@@ -2,22 +2,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container mt-4">
-    <h1>Détails du Point de Vente</h1>
-    <dl class="row">
-      <dt class="col-sm-3">Wilaya</dt>
-      <dd class="col-sm-9">{{ object.wilaya }}</dd>
-      <dt class="col-sm-3">Moughataa</dt>
-      <dd class="col-sm-9">{{ object.moughataa }}</dd>
-      <dt class="col-sm-3">Commune</dt>
-      <dd class="col-sm-9">{{ object.commune }}</dd>
-      <dt class="col-sm-3">GPS Latitude</dt>
-      <dd class="col-sm-9">{{ object.gps_lat }}</dd>
-      <dt class="col-sm-3">GPS Longitude</dt>
-      <dd class="col-sm-9">{{ object.gps_long }}</dd>
-      <dt class="col-sm-3">Code</dt>
-      <dd class="col-sm-9">{{ object.code }}</dd>
-    </dl>
-    <a href="{% url 'pointdevente_list' %}" class="btn btn-primary">Retour à la liste</a>
+  <div class="w-full relative isolate px-6 pt-0 lg:px-3">
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+    <div class="w-full mx-auto max-w-2xl px-8 py-32 sm:py-30 lg:py-5 glass">
+      <h1 class="text-center underline font-bold text-xl">Détails du point de vente</h1>
+      <dl class="row">
+        <dt class="col-sm-3 text-gray-900 p-2">Wilaya : <b>{{ object.wilaya }}</b></dt>
+        <dt class="text-gray-900 p-2">Moughataa : <b>{{ object.moughataa }}</b></dt>
+        <dt class="col-sm-3 text-gray-900 p-2">Commune : <b>{{ object.commune }}</b></dt>
+        <dt class="col-sm-3 text-gray-900 p-2">GPS Latitude : <b>{{ object.gps_lat }}</b></dt>
+        <dt class="col-sm-3 text-gray-900 p-2">GPS Longitude : <b>{{ object.gps_long }}</b></dt>
+        <dt class="col-sm-3 text-gray-900 p-2">Code : <b>{{ object.code }}</b></dt>
+      </dl>
+      <a href="{% url 'pointdevente_list' %}" class="bt-retour rounded-3xl bg-indigo-600 text-sm px-3.5 py-2.5 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><span class="material-symbols-outlined">arrow_back</span><span>Retour à la liste</span></a>
+    </div>
   </div>
 {% endblock %}

@@ -11,7 +11,7 @@ from django.template import loader
 
 from django.urls import path
 from .views import *
-
+from .views import export_famillesproduits_csv
 urlpatterns = [
     # Chemin pour afficher la liste des produits
     path('produits/', ProduitListView.as_view(), name='produit_list'),
@@ -67,4 +67,15 @@ urlpatterns = [
 
     # Chemin pour afficher la page d'accueil
     path('accueil/', HomeView.as_view(), name='home'),
+
+     # ... (vos autres URL)
+    path('application/', application_page, name='application_page'),
+
+    path('export_produits_csv/', export_produits_csv, name='export_produits_csv'),
+    path('export_famillesproduits_csv/', export_famillesproduits_csv, name='export_famillesproduits_csv'),
+    path('export_paniers_csv/', export_paniers_csv, name='export_paniers_csv'),
+    path('export_prix_csv/', export_prix_csv, name='export_prix_csv'),
+    path('export_paniersproduits_csv/', export_paniersproduits_csv, name='export_paniersproduits_csv'),
+    path('export_pointsdevente_csv/', export_pointsdevente_csv, name='export_pointsdevente_csv'),
+    path('import_produits_csv/', import_produits_csv, name='import_produits_csv'),
 ]

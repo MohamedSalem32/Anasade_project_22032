@@ -1,10 +1,9 @@
  # ansade_app/models.py
 from django.db import models
 from django.urls import reverse
-
+from import_export import resources, fields, widgets
+from import_export.widgets import ForeignKeyWidget
 # Create your models here.
-
-
  
 
  
@@ -28,7 +27,7 @@ class Produit(models.Model):
     date_creation = models.DateField()
     famille = models.ForeignKey(FamilleProduit, on_delete=models.CASCADE)
     # Add other fields as needed
-    code = models.CharField(max_length=50, unique=True,default='le code du produit par défaut' )  # Ajout de la colonne 'code'
+    code = models.CharField(max_length=50, unique=True)  # Ajout de la colonne 'code'
 
     def __str__(self):
         return self.nom
@@ -43,7 +42,7 @@ class PointDeVente(models.Model):
     gps_lat = models.DecimalField(max_digits=9, decimal_places=6)
     gps_long = models.DecimalField(max_digits=9, decimal_places=6)
 # Add other fields as needed
-    code = models.CharField(max_length=100,default='Nom par défaut')
+    code = models.CharField(max_length=100)
  
     def __str__(self):
         return f"{self.commune}, {self.moughataa}, {self.wilaya}, {self.code}"
@@ -64,13 +63,13 @@ class Prix(models.Model):
     
     def get_absolute_url(self):
         return reverse('prix_detail', args=[str(self.id)])
+
  
 class Panier(models.Model):
-   
-    date_ajout = models.DateTimeField()
-    description = models.CharField(max_length=255, default='Aucune description')
-    code = models.CharField(max_length=50, unique=True, default='le code du panier par défaut')
-    label = models.CharField(max_length=100, default='Label par défaut')
+    date_ajout = models.DateField()
+    description = models.CharField(max_length=255)
+    code = models.CharField(max_length=50)
+    label = models.CharField(max_length=100)
     
      
     def __str__(self):
@@ -86,7 +85,7 @@ class Panier_Produit(models.Model):
     prix = models.ForeignKey(Prix, on_delete=models.CASCADE)
     ponderation = models.DecimalField(max_digits=5, decimal_places=2)
     # Add other fields as needed
-    nom = models.CharField(max_length=100,default='Adresse par défaut')
+    nom = models.CharField(max_length=100)
     
     def __str__(self):
         return f"Panier_Produit {self.id},{self.nom}"
@@ -98,10 +97,45 @@ class Panier_Produit(models.Model):
 
 # Enfin, définir les autres classes
 
+## les codes des ressources pour l'import/export
 
-    
+class FamilleProduitResource(resources.ModelResource):
+    class Meta:
+        model = FamilleProduit
+        fields = '__all__'
 
+class ProduitResource(resources.ModelResource):
+    famille = fields.Field(column_name='Famille', attribute='famille', widget=ForeignKeyWidget(FamilleProduit, 'nom'))
 
+    class Meta:
+        model = Produit
+        fields = '__all__'
+
+class PointDeVenteResource(resources.ModelResource):
+    class Meta:
+        model = PointDeVente
+        fields = '__all__'
+
+class PrixResource(resources.ModelResource):
+    produit = fields.Field(column_name='Produit', attribute='produit', widget=ForeignKeyWidget(Produit, 'nom'))
+    point_vente = fields.Field(column_name='Point de Vente', attribute='point_vente', widget=ForeignKeyWidget(PointDeVente, 'code'))
+
+    class Meta:
+        model = Prix
+        fields = '__all__'
+
+class PanierResource(resources.ModelResource):
+    class Meta:
+        model = Panier
+        fields = '__all__'
+
+class Panier_ProduitResource(resources.ModelResource):
+    code = fields.Field(column_name='Code', attribute='code', widget=ForeignKeyWidget(Panier, 'code'))
+    prix = fields.Field(column_name='Prix', attribute='prix', widget=ForeignKeyWidget(Prix, 'id'))
+
+    class Meta:
+        model = Panier_Produit
+        fields = '__all__'
 
 
 
