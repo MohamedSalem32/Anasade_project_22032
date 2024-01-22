@@ -8,10 +8,12 @@ from .models import Produit, FamilleProduit, Panier, Prix, Panier_Produit, Point
 from django.views import View
 from django.http import HttpResponse
 from django.template import loader
-
+from .views import prix_evolution_chart
 from django.urls import path
 from .views import *
 from .views import export_famillesproduits_csv
+
+
 urlpatterns = [
     # Chemin pour afficher la liste des produits
     path('produits/', ProduitListView.as_view(), name='produit_list'),
@@ -77,5 +79,16 @@ urlpatterns = [
     path('export_prix_csv/', export_prix_csv, name='export_prix_csv'),
     path('export_paniersproduits_csv/', export_paniersproduits_csv, name='export_paniersproduits_csv'),
     path('export_pointsdevente_csv/', export_pointsdevente_csv, name='export_pointsdevente_csv'),
+    
     path('import_produits_csv/', import_produits_csv, name='import_produits_csv'),
-]
+    path('import_prix/', import_prix, name='import_prix'),
+    path('import_paniers/', import_paniers, name='import_paniers'),
+    path('import_PanierProduits/', import_PanierProduits, name='import_PanierProduits'),
+    path('import_pointsdevente/', import_pointsdevente, name='import_pointsdevente'),
+    path('import_famille_produit/', import_famille_produit, name='import_famille_produit'), 
+
+    path('prix_evolution_chart/<int:produit_id>/', prix_evolution_chart, name='prix_evolution_chart'),
+    path('prix_evolution_chart/data/<int:produit_id>/', PrixEvolutionChart.as_view(), name='prix_evolution_chart_data'),
+    path('inpc/', inpc, name='inpc'),
+ 
+    ]

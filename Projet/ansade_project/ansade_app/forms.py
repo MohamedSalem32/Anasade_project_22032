@@ -37,3 +37,8 @@ class ProduitForm(forms.ModelForm):
         fields = ['nom', 'description', 'prix', 'famille', 'code', 'date_creation']
 
  
+# ansade_app/forms.py
+from django import forms
+
+class AnneeForm(forms.Form):
+    annee_calcul = forms.ChoiceField(choices=[(annee, annee) for annee in range(2019, 2024)], required=False)

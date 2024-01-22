@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ansade_app',
     'widget_tweaks',
     'import_export',
+    'chartjs',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'ansade_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['ansade_app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,8 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ansade_project.wsgi.application'
-
+ 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

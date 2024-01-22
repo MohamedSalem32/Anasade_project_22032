@@ -1,59 +1,29 @@
 # ansade_app/views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
+from django.views.generic import *
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.template import loader
-from .models import Produit, FamilleProduit, Panier, Prix, Panier_Produit, PointDeVente
+from .models import *
 from django.views import View
 from django.views.generic.edit import CreateView
 from .forms import *
 from import_export import resources
 from tablib import Dataset
-from .models import ProduitResource 
+from chartjs.views.lines import BaseLineChartView
+from django.http import JsonResponse
+ 
 
 # Classe de ressource pour l'import/export des Produits
 class ProduitResource(resources.ModelResource):
     class Meta:
         model = Produit
-
-# Fonction pour l'export des produits au format CSV
-def export_produits_csv(request):
-    produit_resource = ProduitResource()
-    dataset = produit_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="produits.csv"'
-    return response 
-# Fonction pour l'importation des produits à partir d'un fichier CSV
-def import_produits_csv(request):
-    if request.method == 'POST':
-        produit_resource = ProduitResource()
-        dataset = Dataset()
-
-        new_produits = request.FILES['myfile']
-
-        if not new_produits.name.endswith('csv'):
-            messages.error(request, 'Le fichier doit être au format CSV')
-            return render(request, 'ansade_app/import_data.html')
-
-        imported_data = dataset.load(new_produits.read().decode('latin-1'), format='csv')
-        result = produit_resource.import_data(dataset, dry_run=True)  # Test the data import
-
-        if not result.has_errors():
-            produit_resource.import_data(dataset, dry_run=False)  # Actually import now
-            messages.success(request, 'Les données ont été importées avec succès.')
-        else:
-            messages.error(request, 'Il y a des erreurs dans votre fichier.')
-
-    return render(request, 'ansade_app/import_data.html')         
+         
 # Classe de vue pour afficher la liste des produits
 class ProduitListView(ListView):
     model = Produit
     template_name = 'ansade_app/produit_list.html'
-
-    
- 
 
 # Classe de vue pour afficher les détails d'un produit spécifique
 class ProduitDetailView(DetailView):
@@ -64,7 +34,6 @@ class ProduitCreateView(CreateView):
     model = Produit
     template_name = 'ansade_app/produit_form.html'
     fields = ['nom', 'description', 'famille','prix','date_creation','code']
-
 
 class ProduitUpdateView(UpdateView):
     model = Produit
@@ -93,19 +62,11 @@ def ajouter_produit(request):
 class FamilleProduitResource(resources.ModelResource):
     class Meta:
         model = FamilleProduit
-
-# Fonction pour l'export des familles de produits au format CSV
-def export_famillesproduits_csv(request):
-        familleproduit_resource = FamilleProduitResource()
-        dataset = familleproduit_resource.export()
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="famillesproduits.csv"'
-        return response      
+         
+         
 class FamilleProduitListView(ListView):
     model = FamilleProduit
     template_name = 'ansade_app/familleproduit_list.html'
-
- 
 
 # Classe de vue pour afficher les détails d'une famille de produit spécifique
 class FamilleProduitDetailView(DetailView):
@@ -138,22 +99,12 @@ class FamilleProduitDeleteView(DeleteView):
 class PanierResource(resources.ModelResource):
     class Meta:
         model = Panier
-# Fonction pour l'export des paniers au format CSV
-def export_paniers_csv(request):
-    panier_resource = PanierResource()
-    dataset = panier_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="paniers.csv"'
-    return response
+
 class PanierListView(ListView):
     model = Panier
     template_name = 'ansade_app/panier_list.html'
 
-    
-
 # Classe de vue pour afficher les détails d'un panier spécifique
-
-
 class PanierDetailView(DetailView):
     model = Panier
     template_name = 'ansade_app/panier_detail.html'
@@ -169,32 +120,20 @@ class PanierUpdateView(UpdateView):
     template_name = 'ansade_app/panier_form.html'
     fields = ['date_ajout', 'description','label','code']
 
-
 class PanierDeleteView(DeleteView):
     model = Panier
     template_name = 'ansade_app/panier_confirm_delete.html'
     success_url = reverse_lazy('panier_list') 
-
-   
-
 # Classe de vue pour afficher la liste des prix
     
 # Classe de ressource pour l'import/export des Prix
 class PrixResource(resources.ModelResource):
     class Meta:
         model = Prix
-# Fonction pour l'export des prix au format CSV
-def export_prix_csv(request):
-    prix_resource = PrixResource()
-    dataset = prix_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="prix.csv"'
-    return response 
+
 class PrixListView(ListView):
     model = Prix
     template_name = 'ansade_app/prix_list.html'
-
-       
 
 # Classe de vue pour afficher les détails d'un prix spécifique
 class PrixDetailView(DetailView):
@@ -211,29 +150,23 @@ class PrixUpdateView(UpdateView):
     template_name = 'ansade_app/prix_form.html'
     fields = ['montant','produit','point_vente','date_validite']
 
-
 class PrixDeleteView(DeleteView):
     model = Prix
     template_name = 'ansade_app/prix_confirm_delete.html'
     success_url = reverse_lazy('prix_list')
 
+
 # Classe de ressource pour l'import/export des Paniers_Produits
 class Panier_ProduitResource(resources.ModelResource):
     class Meta:
         model = Panier_Produit
-# Fonction pour l'export des paniers produits au format CSV
-def export_paniersproduits_csv(request):
-    panier_produit_resource = Panier_ProduitResource()
-    dataset = panier_produit_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="paniersproduits.csv"'
-    return response
+         
+
+
 # Classe de vue pour afficher la liste des pondérations
 class Panier_ProduitListView(ListView):
     model = Panier_Produit
     template_name = 'ansade_app/Panier_Produit_list.html'
-
-     
 
 # Classe de vue pour afficher les détails d'une pondération spécifique
 class Panier_ProduitDetailView(DetailView):
@@ -251,7 +184,6 @@ class Panier_ProduitUpdateView(UpdateView):
     template_name = 'ansade_app/Panier_Produit_form.html'
     fields = ['nom','ponderation','prix','quantite','code']
 
-
 class Panier_ProduitDeleteView(DeleteView):
     model = Panier_Produit
     template_name = 'ansade_app/Panier_Produit_confirm_delete.html'
@@ -261,13 +193,6 @@ class Panier_ProduitDeleteView(DeleteView):
 class PointDeVenteResource(resources.ModelResource):
     class Meta:
         model = PointDeVente
-# Fonction pour l'export des points de vente au format CSV
-def export_pointsdevente_csv(request):
-    pointdevente_resource = PointDeVenteResource()
-    dataset = pointdevente_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="pointsdevente.csv"'
-    return response
 
 # Classe de vue pour afficher la liste des points de vente
 class PointDeVenteListView(ListView):
@@ -307,4 +232,373 @@ class HomeView(TemplateView):
 
 
 def application_page(request):
-    return render(request, 'ansade_app/application_page.html')
+    return render(request, 'application_page.html')
+
+ 
+
+# Fonction pour l'export des produits au format CSV
+def export_produits_csv(request):
+    produit_resource = ProduitResource()
+    dataset = produit_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="produits.csv"'
+    return response 
+
+def import_produits_csv(request):
+    result_message = None
+
+    if request.method == 'POST':
+        produit_resource = ProduitResource()
+        dataset = Dataset()
+
+        if 'myfile' not in request.FILES:
+            messages.warning(request, 'Aucun fichier sélectionné.')
+        else:
+            new_produit_file = request.FILES['myfile']
+
+            if not new_produit_file.name.endswith('.csv'):
+                messages.error(request, 'Le fichier doit être un CSV.')
+            else:
+                try:
+                    imported_data = dataset.load(new_produit_file.read().decode('ISO-8859-1'))
+                    produit_resource.import_data(dataset, dry_run=False)
+                    messages.success(request, 'Import réussi.')
+                    return redirect('produit_list')
+                except Exception as e:
+                    messages.error(request, f'Une erreur s\'est produite lors de l\'import : {e}')
+
+                result_message = list(messages.get_messages(request))  # Convert messages to a list
+
+    return render(request, 'ansade_app/import_data.html', {'result_message': result_message})
+
+
+def export_famillesproduits_csv(request):
+    familleproduit_resource = FamilleProduitResource()
+    dataset = familleproduit_resource.export()
+
+    # Ajoutez ces lignes pour afficher des messages de débogage
+    print("Exporting dataset:", dataset)
+    print("CSV content:", dataset.csv)
+
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="familleproduits.csv"'
+    return response
+ 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from tablib import Dataset
+
+def import_famille_produit(request):
+    result_message = None
+
+    if request.method == 'POST':
+        famille_produit_resource = FamilleProduitResource()
+        dataset = Dataset()
+
+        if 'myfile' not in request.FILES:
+            messages.warning(request, 'Aucun fichier sélectionné.')
+        else:
+            new_familleproduit_file = request.FILES['myfile']
+
+            if not new_familleproduit_file.name.endswith('.csv'):
+                messages.error(request, 'Le fichier doit être un CSV.')
+            else:
+                try:
+                    # Ajout de l'option format pour spécifier le format du fichier
+                    imported_data = dataset.load(new_familleproduit_file.read().decode('ISO-8859-1'))
+ 
+                    famille_produit_resource.import_data(dataset, dry_run=False)
+                    messages.success(request, 'Import réussi.')
+                    return redirect('familleproduit_list')
+                except Exception as e:
+                    messages.error(request, f'Une erreur s\'est produite lors de l\'import : {e}')
+
+                result_message = list(messages.get_messages(request))  # Convert messages to a list
+
+    return render(request, 'ansade_app/import_data.html', {'result_message': result_message})
+
+
+
+# Fonction pour l'export des paniers au format CSV
+def export_paniers_csv(request):
+    panier_resource = PanierResource()
+    dataset = panier_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="paniers.csv"'
+    return response
+
+
+def import_paniers(request):
+    result_message = None
+
+    if request.method == 'POST':
+        panier_resource = PanierResource()
+        dataset = Dataset()
+
+        if 'myfile' not in request.FILES:
+            messages.warning(request, 'Aucun fichier sélectionné.')
+        else:
+            new_panier_file = request.FILES['myfile']
+
+            if not new_panier_file.name.endswith('.csv'):
+                messages.error(request, 'Le fichier doit être un CSV.')
+            else:
+                try:
+                    imported_data = dataset.load(new_panier_file.read().decode('ISO-8859-1'))
+                    panier_resource.import_data(dataset, dry_run=False)
+                    messages.success(request, 'Import réussi.')
+                    return redirect('panier_list')
+                    
+                
+                       
+                except Exception as e:
+                    messages.error(request, f'Une erreur s\'est produite lors de l\'import : {e}')
+
+                result_message = list(messages.get_messages(request))  # Convert messages to a list
+
+    return render(request, 'ansade_app/import_data.html', {'result_message': result_message})
+
+
+# Fonction pour l'export des prix au format CSV
+def export_prix_csv(request):
+    prix_resource = PrixResource()
+    dataset = prix_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="prix.csv"'
+    return response 
+
+
+def import_prix(request):
+    result_message = None
+
+    if request.method == 'POST':
+        prix_resource = PrixResource()
+        dataset = Dataset()
+
+        if 'myfile' not in request.FILES:
+            messages.warning(request, 'Aucun fichier sélectionné.')
+        else:
+            new_prix_file = request.FILES['myfile']
+
+            if not new_prix_file.name.endswith('.csv'):
+                messages.error(request, 'Le fichier doit être un CSV.')
+            else:
+                try:
+                    imported_data = dataset.load(new_prix_file.read().decode('ISO-8859-1'))
+                    prix_resource.import_data(dataset, dry_run=False)
+                    messages.success(request, 'Import réussi.')
+                    return redirect('prix_list')
+                    
+                
+                       
+                except Exception as e:
+                    messages.error(request, f'Une erreur s\'est produite lors de l\'import : {e}')
+
+                result_message = list(messages.get_messages(request))  # Convert messages to a list
+
+    return render(request, 'ansade_app/import_data.html', {'result_message': result_message})
+
+
+
+# Fonction pour l'export des points de vente au format CSV
+def export_pointsdevente_csv(request):
+    pointdevente_resource = PointDeVenteResource()
+    dataset = pointdevente_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pointsdevente.csv"'
+    return response
+
+
+def import_pointsdevente(request):
+    result_message = None
+
+    if request.method == 'POST':
+        pointsdevente_resource = PointDeVenteResource()
+        dataset = Dataset()
+
+        if 'myfile' not in request.FILES:
+            messages.warning(request, 'Aucun fichier sélectionné.')
+        else:
+            new_pointsdevente_file = request.FILES['myfile']
+
+            if not new_pointsdevente_file.name.endswith('.csv'):
+                messages.error(request, 'Le fichier doit être un CSV.')
+            else:
+                try:
+                    imported_data = dataset.load(new_pointsdevente_file.read().decode('ISO-8859-1'))
+                    pointsdevente_resource.import_data(dataset, dry_run=False)
+                    messages.success(request, 'Import réussi.')
+                    return redirect('pointdevente_list')
+                    
+                
+                       
+                except Exception as e:
+                    messages.error(request, f'Une erreur s\'est produite lors de l\'import : {e}')
+
+                result_message = list(messages.get_messages(request))  # Convert messages to a list
+
+    return render(request, 'ansade_app/import_data.html', {'result_message': result_message})
+
+
+ # Fonction pour l'export des paniers produits au format CSV
+def export_paniersproduits_csv(request):
+    panier_produit_resource = Panier_ProduitResource()
+    dataset = panier_produit_resource.export()
+    response = HttpResponse(dataset.csv, content_type='csv')
+    response['Content-Disposition'] = 'attachment; filename="paniers_produits.csv"'
+    return response
+
+
+def import_PanierProduits(request):
+    result_message = None
+
+    if request.method == 'POST':
+        panierproduit_resource = Panier_ProduitResource()
+        dataset = Dataset()
+
+        if 'myfile' not in request.FILES:
+            messages.warning(request, 'Aucun fichier sélectionné.')
+        else:
+            new_panierproduit_file = request.FILES['myfile']
+
+            if not new_panierproduit_file.name.endswith('.csv'):
+                messages.error(request, 'Le fichier doit être un CSV.')
+            else:
+                try:
+                    imported_data = dataset.load(new_panierproduit_file.read().decode('utf-8'))
+                    panierproduit_resource.import_data(dataset, dry_run=False)
+                    messages.success(request, 'Import réussi.')
+                    return redirect('Panier_Produit_list')
+                    
+                
+                       
+                except Exception as e:
+                    messages.error(request, f'Une erreur s\'est produite lors de l\'import : {e}')
+
+                result_message = list(messages.get_messages(request))  # Convert messages to a list
+
+    return render(request, 'ansade_app/import_data.html', {'result_message': result_message})
+ 
+
+from django.db.models.functions import ExtractYear
+from django.db.models import Avg
+from django.http import JsonResponse
+from chartjs.views.lines import BaseLineChartView
+
+class PrixEvolutionChart(BaseLineChartView):
+    def get_labels(self):
+        # Récupérer les années de validité des prix pour un produit spécifique et les trier
+        return sorted(
+            list(
+                Prix.objects.filter(produit_id=self.kwargs['produit_id'])
+                .annotate(year=ExtractYear('date_validite'))
+                .values_list('year', flat=True)
+                .distinct()
+            )
+        )
+
+    def get_providers(self):
+        # Récupérer les moyennes des prix pour un produit spécifique par année
+        return ['Moyenne des Prix']
+
+    def get_data(self):
+        # Récupérer les moyennes des prix pour un produit spécifique par année
+        moyennes = list(
+            Prix.objects.filter(produit_id=self.kwargs['produit_id'])
+            .annotate(year=ExtractYear('date_validite'))
+            .values('year')
+            .annotate(moyenne=Avg('montant'))
+            .values_list('moyenne', flat=True)
+        )
+        return [moyennes]
+
+    def render_to_response(self, context, **response_kwargs):
+        data = {
+            'labels': self.get_labels(),
+            'datasets': [
+                {'label': provider, 'data': values}
+                for provider, values in zip(self.get_providers(), self.get_data())
+            ]
+        }
+        return JsonResponse(data)
+
+def prix_evolution_chart(request, produit_id):
+    return render(request, 'ansade_app/prix_evolution_chart.html', {'produit_id': produit_id})
+
+
+ 
+from .forms import AnneeForm
+
+
+def inpc(request):
+    # Liste des années disponibles
+    
+
+    # Utiliser le formulaire pour obtenir l'année sélectionnée
+    annee_form = AnneeForm(request.GET)
+
+    # Si le formulaire est soumis et valide, utilisez la valeur de l'année sélectionnée
+    if annee_form.is_valid():
+        selected_annee = annee_form.cleaned_data['annee_calcul']
+        years = [2019, 2020, 2021, 2022, 2023]
+
+        # Assurez-vous que la valeur n'est pas une chaîne vide avant de convertir en entier
+        if selected_annee and selected_annee != '':
+            selected_annee = int(selected_annee)
+        else:
+            selected_annee = 2022  # Valeur par défaut si la valeur est une chaîne vide
+    else:
+            selected_annee = 2022 
+    # Calculer l'indice des prix annuel
+    indice_prix_annuel = calculer_indice_prix_annuel(selected_annee)
+
+    # Si l'indice est None, définissez-le à 0
+    if indice_prix_annuel is None:
+        indice_prix_annuel = 0
+
+    # Faites quelque chose avec l'indice, comme le passer au contexte pour l'affichage dans le modèle
+    context = {'indice_prix_annuel': indice_prix_annuel, 'annees_form': annee_form, 'selected_annee': selected_annee}
+    return render(request, 'ansade_app\inpc.html', context)
+
+
+
+
+
+
+
+
+def inpc(request):
+    # Liste des années disponibles
+     
+
+    # Utiliser le formulaire pour obtenir l'année sélectionnée
+    annee_form = AnneeForm(request.GET)
+
+    # Si le formulaire est soumis et valide, utilisez la valeur de l'année sélectionnée
+    if annee_form.is_valid():
+        selected_annee = annee_form.cleaned_data['annee_calcul']
+     
+        # Assurez-vous que la valeur n'est pas une chaîne vide avant de convertir en entier
+        if selected_annee and selected_annee != '':
+            selected_annee = int(selected_annee)
+        else:
+            selected_annee = 2023  # Valeur par défaut si la valeur est une chaîne vide
+    else:
+            selected_annee = 2023 
+    # Calculer l'indice des prix annuel
+    indice_prix_annuel = calculer_indice_prix_annuel(selected_annee)
+
+    # Si l'indice est None, définissez-le à 0
+    if indice_prix_annuel is None:
+        indice_prix_annuel = 0
+
+    # Faites quelque chose avec l'indice, comme le passer au contexte pour l'affichage dans le modèle
+    context = {'indice_prix_annuel': indice_prix_annuel, 'annees_form': annee_form, 'selected_annee': selected_annee}
+    return render(request, 'ansade_app\inpc.html', context)
+
+
+
+
+
+

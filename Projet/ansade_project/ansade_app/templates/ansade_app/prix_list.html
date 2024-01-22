@@ -1,17 +1,17 @@
 <!-- ansade_app/prix_list.html -->
-{% extends 'base.html' %}
+{% extends 'application_page.html' %}
 
 {% block content %}
 
   <div class="cont w-full">
     <div class="width-table relative isolate px-6 pt-0 lg:px-3 t">
       <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-        <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+        </div>
       </div>
-      <div class="w-full sm:py-20 lg:py-20">
-      <!-- Bouton pour ajouter une nouvelle famille de produits -->
-      <h1 class="underline text-2xl text-center">Liste des prix</h1>
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+     <div class="w-full sm:py-20 lg:py-20">
+           <h1 class="underline text-2xl text-center">Liste des prix</h1>
+       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 shadow-md border-2">
           <tr class="">
             <th scope="col" class="px-6 py-3 rounded-t-lg">#</th>
@@ -39,12 +39,12 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
-      </div>
+       </table>
     </div>
+     
+  </div>
     <div class="sm:py-20 lg:py-20 div-ajout p-5">
-      <!-- Bouton pour exporter la liste des familles de produits au format CSV -->
-      <a href="{% url 'export_prix_csv' %}" class="export">
+       <a href="{% url 'export_prix_csv' %}" class="export">
           <span class="material-symbols-outlined w-1">
               cloud_download
           </span>
@@ -59,5 +59,46 @@
         <p class="font-sans text-lg"><b>Ajouter une nouvelle prix</b></p>
       </a>
     </div>
+    <div class="sm:py-20 lg:py-20 div-ajout p-5">
+       <a href="{% url 'import_prix' %}" class="import">
+        <span class="material-symbols-outlined w-1">
+          cloud_upload
+        </span>
+        <p class="font-sans text-lg"><b>Importer depuis un fichier CSV</b></p>
+      </a>
+    </div>
+
+
+
+    <div class="sm:py-20 lg:py-20 p-5">
+      <!-- Dropdown for product selection -->
+      <label for="productSelect" class="font-sans text-lg">
+        <b>Sélectionner un produit :</b>
+       </label>
+        <select id="productSelect" class="border p-2 rounded-md">
+          {% for prix in object_list %}
+            <option value="{{ prix.produit.id }}" class="text-black20">{{ prix.produit.nom }}</option>
+          {% endfor %}
+        </select> 
+       
+      <a onclick="goTopage(productSelect.value)" class="ml-4 cursor-pointer">Visualiser</a>
+      
+   
   </div>
+</div>
+
+<script>
+  function goTopage(v) {
+    if (v != null) {
+      var url = `http://127.0.0.1:8000/ansade/prix_evolution_chart/${v}/`;
+
+      // Navigate to the URL
+      window.location.href = url;
+    }
+  }
+</script>
+     
+    
+     
 {% endblock %}
+{% debug %}

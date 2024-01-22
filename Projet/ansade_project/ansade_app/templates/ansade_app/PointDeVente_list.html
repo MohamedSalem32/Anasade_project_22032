@@ -1,5 +1,5 @@
 <!-- templates/ansade_app/pointdevente_list.html -->
-{% extends 'base.html' %}
+{% extends 'application_page.html' %}
 
 {% block content %}
   <div class="cont w-full">
@@ -56,6 +56,15 @@
           add_circle
           </span>
         <p class="font-sans text-lg"><b>Ajouter une nouvelle point de vente</b></p>
+      </a>
+    </div>
+    <div class="sm:py-20 lg:py-20 div-ajout p-5">
+      <!-- Bouton pour importer des données depuis un fichier CSV -->
+      <a href="{% url 'import_pointsdevente' %}" class="import">
+        <span class="material-symbols-outlined w-1">
+          cloud_upload
+        </span>
+        <p class="font-sans text-lg"><b>Importer depuis un fichier CSV</b></p>
       </a>
     </div>
   </div>

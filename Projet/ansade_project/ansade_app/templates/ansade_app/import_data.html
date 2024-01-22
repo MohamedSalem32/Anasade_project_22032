@@ -1,5 +1,5 @@
 <!-- ansade_app/import_data.html -->
-{% extends 'base.html' %}
+{% extends 'application_page.html' %}
 
 {% block content %}
   <div class="cont w-full">
@@ -14,7 +14,8 @@
         <!-- Formulaire d'importation -->
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <input type="file" name="myfile" accept=".csv" class="mt-4 p-2 border rounded-md w-full">
+          <label for="myfile" class="mt-4 block">Choisir un fichier :</label>
+          <input type="file" name="myfile" accept=".csv" class="p-2 border rounded-md w-full">
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">Importer</button>
         </form>
 
