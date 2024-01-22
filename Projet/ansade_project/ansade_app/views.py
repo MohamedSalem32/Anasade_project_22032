@@ -527,78 +527,78 @@ def prix_evolution_chart(request, produit_id):
     return render(request, 'ansade_app/prix_evolution_chart.html', {'produit_id': produit_id})
 
 
+
  
-from .forms import AnneeForm
+from django.db.models import Avg, DecimalField, Sum, F
+from django.db.models.functions import Coalesce
+from decimal import Decimal
+ 
+
+def calculer_inpc_par_produit(annee, produit_id):
+    produits = Produit.objects.filter(id=produit_id)
+    resultats = []
+
+    for produit in produits:
+        prix_entries = Prix.objects.filter(
+            produit=produit,
+            date_validite__year=annee
+        )
+
+        somme_ponderations = Coalesce(Sum(F('panier_produit__ponderation')), Decimal(0))
+        somme_produits_ponderees = Coalesce(Sum(F('montant') * F('panier_produit__ponderation'), output_field=DecimalField()), Decimal(0))
+
+        prix_entries_aggregated = prix_entries.aggregate(
+            somme_ponderations=somme_ponderations,
+            somme_produits_ponderees=somme_produits_ponderees
+        )
+
+        somme_ponderations = prix_entries_aggregated['somme_ponderations']
+        somme_produits_ponderees = prix_entries_aggregated['somme_produits_ponderees']
+
+        inpc = somme_produits_ponderees / somme_ponderations if somme_ponderations > 0 else Decimal(0)
+
+        resultats.append({
+            'annee': annee,
+            'produit': produit.nom,
+            'inpc': inpc
+        })
+
+    return resultats
+
 
 
 def inpc(request):
     # Liste des années disponibles
-    
+    years = [2019, 2020, 2021, 2022, 2023, 2024]  # Update this list with your available years
 
-    # Utiliser le formulaire pour obtenir l'année sélectionnée
-    annee_form = AnneeForm(request.GET)
+    # Liste des produits disponibles
+    produits = Produit.objects.all()
 
-    # Si le formulaire est soumis et valide, utilisez la valeur de l'année sélectionnée
-    if annee_form.is_valid():
-        selected_annee = annee_form.cleaned_data['annee_calcul']
-        years = [2019, 2020, 2021, 2022, 2023]
+    # Obtenez manuellement les valeurs sélectionnées par l'utilisateur
+    selected_annee = request.GET.get('annee_calcul')
+    selected_produit_id = request.GET.get('produit')
 
-        # Assurez-vous que la valeur n'est pas une chaîne vide avant de convertir en entier
-        if selected_annee and selected_annee != '':
-            selected_annee = int(selected_annee)
-        else:
-            selected_annee = 2022  # Valeur par défaut si la valeur est une chaîne vide
-    else:
-            selected_annee = 2022 
-    # Calculer l'indice des prix annuel
-    indice_prix_annuel = calculer_indice_prix_annuel(selected_annee)
+    # Si les valeurs ne sont pas fournies dans la requête, utilisez une valeur par défaut
+    if not selected_annee:
+        selected_annee = '2023'  # Valeur par défaut si l'année n'est pas spécifiée
 
-    # Si l'indice est None, définissez-le à 0
-    if indice_prix_annuel is None:
-        indice_prix_annuel = 0
+    if not selected_produit_id:
+        selected_produit_id = produits.first().id  # Utilisez le premier produit par défaut si aucun n'est spécifié
 
-    # Faites quelque chose avec l'indice, comme le passer au contexte pour l'affichage dans le modèle
-    context = {'indice_prix_annuel': indice_prix_annuel, 'annees_form': annee_form, 'selected_annee': selected_annee}
-    return render(request, 'ansade_app\inpc.html', context)
+    # Assurez-vous que la valeur n'est pas une chaîne vide avant de convertir en entier
+    if selected_annee and selected_annee != '':
+        selected_annee = int(selected_annee)
 
+    # Calculer l'indice des prix annuel pour chaque produit
+    indices_prix_annuels = calculer_inpc_par_produit(selected_annee, selected_produit_id)
 
+    # Faites quelque chose avec les indices, comme les passer au contexte pour l'affichage dans le modèle
+    context = {
+        'indices_prix_annuels': indices_prix_annuels,
+        'years': years,
+        'produits': produits,
+        'selected_annee': selected_annee,
+        'selected_produit': selected_produit_id
+    }
 
-
-
-
-
-
-def inpc(request):
-    # Liste des années disponibles
-     
-
-    # Utiliser le formulaire pour obtenir l'année sélectionnée
-    annee_form = AnneeForm(request.GET)
-
-    # Si le formulaire est soumis et valide, utilisez la valeur de l'année sélectionnée
-    if annee_form.is_valid():
-        selected_annee = annee_form.cleaned_data['annee_calcul']
-     
-        # Assurez-vous que la valeur n'est pas une chaîne vide avant de convertir en entier
-        if selected_annee and selected_annee != '':
-            selected_annee = int(selected_annee)
-        else:
-            selected_annee = 2023  # Valeur par défaut si la valeur est une chaîne vide
-    else:
-            selected_annee = 2023 
-    # Calculer l'indice des prix annuel
-    indice_prix_annuel = calculer_indice_prix_annuel(selected_annee)
-
-    # Si l'indice est None, définissez-le à 0
-    if indice_prix_annuel is None:
-        indice_prix_annuel = 0
-
-    # Faites quelque chose avec l'indice, comme le passer au contexte pour l'affichage dans le modèle
-    context = {'indice_prix_annuel': indice_prix_annuel, 'annees_form': annee_form, 'selected_annee': selected_annee}
-    return render(request, 'ansade_app\inpc.html', context)
-
-
-
-
-
-
+    return render(request, 'ansade_app/inpc.html', context)

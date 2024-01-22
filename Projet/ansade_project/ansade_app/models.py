@@ -130,25 +130,3 @@ class Panier_ProduitResource(resources.ModelResource):
     class Meta:
         model = Panier_Produit
         fields = '__all__'
-
-from django.db.models import Sum
-
-def calculer_indice_prix_annuel(annee):
-    # Filtrer les paniers produits pour une année spécifique
-    paniers_produits_annuels = Panier_Produit.objects.filter(code__date_ajout__year=annee)
-
-    # Calculer la somme pondérée des prix
-    somme_ponderation_prix = paniers_produits_annuels.aggregate(somme=Sum(models.F('ponderation') * models.F('prix__montant')))['somme']
-
-    # Calculer la somme des pondérations
-    somme_ponderation = paniers_produits_annuels.aggregate(somme=Sum('ponderation'))['somme']
-
-    # Calculer l'indice des prix annuel
-    # Vérifier si les valeurs sont None avant de faire la division
-    if somme_ponderation_prix is not None and somme_ponderation is not None and somme_ponderation != 0:
-        indice_prix_annuel = somme_ponderation_prix / somme_ponderation
-    else:
-        indice_prix_annuel = 0
-    return indice_prix_annuel
-
-
